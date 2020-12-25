@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.toomuch2learn.microservices</groupId>
+		<artifactId>spring-multi-module-service</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>service-a</artifactId>
+	<name>service-a</name>
+	<description>Service A</description>
+
+	<properties>
+		<java.version>11</java.version>
+		<spring-boot.build-image.imageName>narramadan/${parent.artifactId}-${project.artifactId}</spring-boot.build-image.imageName>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>	
+	</dependencies>
+
+</project>

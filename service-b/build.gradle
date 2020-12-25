@@ -1,0 +1,11 @@
+dependencies {
+
+}
+
+bootJar {
+	enabled = true
+}
+
+bootBuildImage{ 
+  imageName='narramadan/'+rootProject.name+'-'+project.name
+}

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-service-c
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-service-c
+  template:
+    metadata:
+      labels:
+        app: springboot-service-c
+    spec:
+      containers:
+        - name: app
+          image: narramadan/spring-multi-module-service-service-c
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: spring.profiles.active
+              value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service-c-svc
+spec:
+  selector:
+    app: springboot-service-c
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer

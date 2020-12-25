@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: service-a
+  profiles:
+    active: "dev"
+
+---
+
+spring:
+  profiles: dev
+server:
+  port : 8081
+
+serviceb:
+  url: http://localhost:8082
+
+servicec:
+  url: http://localhost:8083
+
+---
+
+spring:
+  profiles: prod
+server:
+  port : 8080

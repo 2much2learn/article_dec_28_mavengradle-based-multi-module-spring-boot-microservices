@@ -1,0 +1,42 @@
+version: '3.9'
+
+# Define services
+services:
+
+  # Service A
+  service-a:
+    image: narramadan/spring-multi-module-service-service-a
+    ports:
+      - "8081:8080"
+    restart: always
+    links:
+      - service-b
+      - service-c
+    environment:
+      - "spring.profiles.active=prod"
+      - "serviceb.url=http://service-b:8082"
+      - "servicec.url=http://service-c:8083"
+    networks:
+      - backend
+
+  # Service B
+  service-b:
+    image: narramadan/spring-multi-module-service-service-b
+    ports:
+      - "8082:8080"
+    restart: always
+    networks: 
+      - backend
+
+  # Service C
+  service-c:
+    image: narramadan/spring-multi-module-service-service-c
+    ports:
+      - "8083:8080"
+    restart: always
+    networks:
+      - backend
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:

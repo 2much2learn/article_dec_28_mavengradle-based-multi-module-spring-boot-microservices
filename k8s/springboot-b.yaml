@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-service-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-service-b
+  template:
+    metadata:
+      labels:
+        app: springboot-service-b
+    spec:
+      containers:
+        - name: app
+          image: narramadan/spring-multi-module-service-service-b
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: spring.profiles.active
+              value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service-b-svc
+spec:
+  selector:
+    app: springboot-service-b
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer

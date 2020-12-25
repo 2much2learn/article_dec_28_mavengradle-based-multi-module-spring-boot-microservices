@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: service-c
+  profiles:
+    active: "dev"
+
+---
+
+spring:
+  profiles: dev
+server:
+  port : 8083
+
+---
+
+spring:
+  profiles: prod
+server:
+  port : 8080

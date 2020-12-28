@@ -1,0 +1,37 @@
+spring-multi-module-service
+|   build.gradle
+|   docker-compose.yml
+|   pom.xml
++---k8s
+|       springboot-a.yaml
+|       springboot-b.yaml
+|       springboot-c.yaml
+|       
++---service-a
+|   |   build.gradle
+|   |   pom.xml
+|   +---src
+|   |   +---main
+|   |   |   +---java
+|   |   |   |   \---com
+|   |   |   |       \---toomuch2learn
+|   |   |   |           \---microservices
+|   |   |   |               \---servicea
+|   |   |   |                   |   GreetingController.java
+|   |   |   |                   |   ServiceAApplication.java
+|   |   |   |                   |   
+|   |   |   |                   +---client
+|   |   |   |                   |       ServiceBClient.java
+|   |   |   |                   |       ServiceCClient.java
+|   |   |   |                   |       
+|   |   |   |                   +---config
+|   |   |   |                   \---model
+|   |   |   |                           Greeting.java
+|   |   |   |                           
+|   |   |   \---resources
+|   |   |           application.yaml
+|   |   |           
+|   |   \---test
++---service-b
++---service-c
+                            

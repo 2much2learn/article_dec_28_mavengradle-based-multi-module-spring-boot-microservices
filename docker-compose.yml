@@ -25,6 +25,8 @@ services:
     ports:
       - "8082:8080"
     restart: always
+    environment:
+      - "spring.profiles.active=prod"
     networks: 
       - backend
 
@@ -34,6 +36,8 @@ services:
     ports:
       - "8083:8080"
     restart: always
+    environment:
+      - "spring.profiles.active=prod"
     networks:
       - backend
 

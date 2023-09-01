@@ -41,19 +41,19 @@ subprojects {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	}
 
-	dependencyManagement {
-		imports {
-			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-		}
-	}
-
 	sonar {
 		properties {
 			property "sonar.projectKey", "KrlosAren_article_dec_28_mavengradle-based-multi-module-spring-boot-microservices"
 			property "sonar.organization", "krlosaren"
 			property "sonar.host.url", "https://sonarcloud.io"
 		}
-}
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		}
+	}
 }
 
 bootJar {

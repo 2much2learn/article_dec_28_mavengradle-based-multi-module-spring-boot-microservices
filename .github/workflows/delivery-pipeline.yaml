@@ -32,11 +32,16 @@ jobs:
           chmod +x gradlew
           ./gradlew build
 
+      # - name: Analisis SonarCloud🧨
+      #   run: |
+      #     chmod +x gradlew
+      #     ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       - name: Analisis SonarCloud🧨
-        run: |
-          chmod +x gradlew
-          ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonar --info
+      
       - name: Docker login
         uses: docker/login-action@v2.2.0
         with:

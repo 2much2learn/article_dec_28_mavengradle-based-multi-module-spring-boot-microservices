@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.1'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
-	id("org.sonarqube") version "4.3.0.3225"
+	id "org.sonarqube" version "4.2.1.3168"
 }
 
 repositories {
@@ -62,5 +62,4 @@ bootJar {
 
 bootBuildImage{
 	enabled = false
-	imageName='$DOCKER_USER_NAME$/'+rootProject.name+"-"+project.name
 }

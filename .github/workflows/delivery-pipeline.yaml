@@ -37,31 +37,17 @@ jobs:
       #     chmod +x gradlew
       #     ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      # - name: Analisis SonarCloud🧨
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}i
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: ./gradlew build sonar --info
       
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Analisis SonarCloud🧨
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}i
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
-      
-      - name: Docker login
-        uses: docker/login-action@v2.2.0
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      # - name: Docker login
+      #   uses: docker/login-action@v2.2.0
+      #   with:
+      #     username: ${{ secrets.DOCKER_USER }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker build image
         env:

@@ -28,11 +28,16 @@ jobs:
         id: running-tests
         uses: actions/checkout@v3.5.3
 
+      # - name: Run SonarCloud tests
+      #   id: running-sonarcloud-test
+      #   run: |
+      #       chmod +x gradlew
+      #       ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       - name: Run SonarCloud tests
-        id: running-sonarcloud-test
-        run: |
-            chmod +x gradlew
-            ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonar --info
       
   build-java-project:
     name: Build java project

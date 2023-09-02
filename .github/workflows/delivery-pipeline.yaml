@@ -68,7 +68,5 @@ jobs:
           IMAGE_NAME: 'delivery-pipeline-devops-foundation'
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          docker build -t $IMAGE_NAME:${{ env.IMAGE_TAG }} .
-          mkdir -p /tmp
           docker-compose --build
           docker-compose push

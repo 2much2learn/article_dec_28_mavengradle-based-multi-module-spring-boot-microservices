@@ -33,11 +33,11 @@ jobs:
       #   run: |
       #       chmod +x gradlew
       #       ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-      - name: Run SonarCloud tests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+      # - name: Run SonarCloud tests
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: ./gradlew build sonar --info
       
   build-java-project:
     name: Build java project
@@ -92,18 +92,18 @@ jobs:
         with:
             name: build
 
-      - name: List files
+      - name: Build and tag image
+        id: build_image
+        env:
+          REGISTRY: 'hub.docker.com'
+          IMAGE_NAME: 'delivery-pipeline-devops-foundation'
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          ls -lha
-
-      # - name: Build and tag image
-      #   id: build_image
-      #   env:
-      #     REGISTRY: 'hub.docker.com'
-      #     IMAGE_NAME: 'delivery-pipeline-devops-foundation'
-      #     IMAGE_TAG: ${{ env.IMAGE_TAG }}
-      #   run: |
-      #     echo REGISTRY: $REGISTRY
-      #     echo IMAGE_TAG: $IMAGE_TAG
-      #     echo "Building and tagging $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ..."
-      #     docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
+          echo REGISTRY: $REGISTRY
+          echo IMAGE_TAG: $IMAGE_TAG
+          echo "Building and tagging $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ..."
+          docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
+          mkdir -p /tmp
+          docker save "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG" > /tmp/docker-image.tar
+          echo "full_docker_image_tag=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT

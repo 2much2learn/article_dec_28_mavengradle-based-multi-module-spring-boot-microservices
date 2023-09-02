@@ -33,3 +33,5 @@ spec:
     - port: 8080
       targetPort: 8080
   type: LoadBalancer
+
+## TODO: usar archivo de gradlew para construir las imagnes del javas y luego crear un docker file que copie este build a y haga push de las imagenes para luego ser consumidas

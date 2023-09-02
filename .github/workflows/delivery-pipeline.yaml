@@ -68,4 +68,7 @@ jobs:
           IMAGE_NAME: 'delivery-pipeline-devops-foundation'
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          gradle clean build bootBuildImage --stacktrace
+          echo REGISTRY: $REGISTRY
+          echo IMAGE_TAG: $IMAGE_TAG
+          echo "Building and tagging $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ..."
+          docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .

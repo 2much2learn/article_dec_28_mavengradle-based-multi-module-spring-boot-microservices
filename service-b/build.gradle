@@ -6,5 +6,5 @@ bootJar {
 }
 
 bootBuildImage{ 
-  imageName='narramadan/'+rootProject.name+'-'+project.name
+  imageName='krlosaren/'+rootProject.name+'-'+project.name
 }

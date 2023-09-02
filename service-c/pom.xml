@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-boot.build-image.imageName>narramadan/${parent.artifactId}-${project.artifactId}</spring-boot.build-image.imageName>	
+		<spring-boot.build-image.imageName>krlosaren/${parent.artifactId}-${project.artifactId}</spring-boot.build-image.imageName>	
 	</properties>
 
 	<dependencies>

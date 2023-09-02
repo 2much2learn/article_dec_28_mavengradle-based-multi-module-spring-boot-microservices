@@ -40,11 +40,11 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
-          mkdir -p /artifacts
+          mkdir -p $GITHUB_WORKSPACE/artifacts
           
-          mv service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar /artifacts
-          mv service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar /artifacts
-          mv service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar /artifacts
+          mv service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar $GITHUB_WORKSPACE/artifacts
+          mv service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar $GITHUB_WORKSPACE/artifacts
+          mv service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar $GITHUB_WORKSPACE/artifacts
       
       - name: Upload JARs
         uses: actions/upload-artifact@v3.1.2

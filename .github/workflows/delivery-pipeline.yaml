@@ -77,7 +77,6 @@ jobs:
       - name: List files
         run: |
           ls -R
-        working-directory: /tmp
 
       # - name: Build and tag image
       #   id: build_image

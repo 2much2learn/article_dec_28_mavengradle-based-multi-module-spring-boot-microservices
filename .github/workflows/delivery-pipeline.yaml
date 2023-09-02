@@ -3,7 +3,7 @@ name: Delivery Pipeline
 on:
   push:
     branches:
-      - feature-ms-carlosLopez-pipelineDelivery
+      - feature-ms-carlosLopez-pipelinedelivery
 
 jobs:
   build:

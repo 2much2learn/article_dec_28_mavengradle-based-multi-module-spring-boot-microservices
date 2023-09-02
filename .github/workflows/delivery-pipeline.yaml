@@ -76,7 +76,7 @@ jobs:
 
       - name: List files
         run: |
-          ls -R
+          ls -lha
 
       # - name: Build and tag image
       #   id: build_image

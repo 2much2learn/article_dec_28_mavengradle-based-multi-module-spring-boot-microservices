@@ -68,4 +68,4 @@ jobs:
           IMAGE_NAME: 'delivery-pipeline-devops-foundation'
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          gradle clean build bootBuildImage
+          gradle clean build bootBuildImage --stacktrace

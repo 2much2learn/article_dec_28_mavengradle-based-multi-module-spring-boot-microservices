@@ -19,12 +19,21 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew test
+
+  scan-vulnerabilities:
+    name: Vulnerabilities scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run SonarCloud tests
+        id: running-sonarcloud-test
+        run: |
+            chmod +x gradlew
+            ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       
   build-java-project:
     name: Build java project
     runs-on: ubuntu-latest
-    needs: 
-      - run-unit-tests
+    needs: [run-unit-tests,scan-vulnerabilities]
     steps:
       - name: Checkout🚀
         uses: actions/checkout@v3.5.3

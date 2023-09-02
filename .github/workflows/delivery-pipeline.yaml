@@ -68,5 +68,4 @@ jobs:
           IMAGE_NAME: 'delivery-pipeline-devops-foundation'
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          docker-compose --build
-          docker-compose push
+          gradle clean build bootBuildImage

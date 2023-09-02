@@ -6,9 +6,25 @@ on:
       - feature-ms-carlosLopez-pipelinedelivery
 
 jobs:
+
+  run-unit-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: running-tests
+        uses: actions/checkout@v3.5.3
+    
+      - name: Run Tests
+        run: |
+          chmod +x gradlew
+          ./gradlew test
+
   build-java-project:
     name: Build java project
     runs-on: ubuntu-latest
+    needs: 
+      - run-unit-tests
     steps:
       - name: Checkout🚀
         uses: actions/checkout@v3.5.3
@@ -20,6 +36,7 @@ jobs:
           distribution: 'zulu'
 
       - name: Compile Gradle
+        id: compile-gradle
         run: |
           chmod +x gradlew
           ./gradlew build
@@ -30,8 +47,7 @@ jobs:
       full_docker_image_tag: '${{ steps.build_image.outputs.full_docker_image_tag }}'
       image_tag: '${{ steps.build_image.outputs.image_tag }}'
     runs-on: ubuntu-latest
-    needs:
-      - build-java-project
+    needs: [run-unit-tests,build-java-project]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -54,12 +70,5 @@ jobs:
         run: |
           docker build -t $IMAGE_NAME:${{ env.IMAGE_TAG }} .
           mkdir -p /tmp
-          docker save "$REGISTRY/$IMAGE_NAME:${{ env.IMAGE_TAG }}" > /tmp/docker-image.tar
-          echo "full_docker_image_tag=$REGISTRY/$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
-      
-      # - name: Upload artifact
-      #   env:
-      #     FULL_IMAGE_TAG: ${{ env.full_docker_image_tag }}
-      #   run: |
-      #     docker push $FULL_IMAGE_NAME
+          docker-compose --build
+          docker-compose push

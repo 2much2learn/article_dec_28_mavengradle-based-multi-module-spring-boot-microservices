@@ -32,6 +32,7 @@ subprojects {
 
 	test {
 		useJUnitPlatform()
+		
 	}
 
 	dependencies {

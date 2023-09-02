@@ -40,16 +40,15 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
-          mkdir -p /tmp
-          mv service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar /tmp
-          mv service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar /tmp
-          mv service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar /tmp
       
       - name: Upload JARs
         uses: actions/upload-artifact@v3.1.2
         with:
           name: build
-          path: /tmp/
+          path: |
+            service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar
+            service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar
+            service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar
           retention-days: 1
 
   docker-build:
@@ -74,7 +73,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: build
-            path: /tmp
 
       - name: List files
         run: |

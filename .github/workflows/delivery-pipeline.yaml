@@ -20,13 +20,13 @@ jobs:
           chmod +x gradlew
           ./gradlew test
 
-  scan-vulnerabilities:
-    name: Vulnerabilities scanner
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: running-tests
-        uses: actions/checkout@v3.5.3
+  # scan-vulnerabilities:
+  #   name: Vulnerabilities scanner
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       id: running-tests
+  #       uses: actions/checkout@v3.5.3
 
       # - name: Run SonarCloud tests
       #   id: running-sonarcloud-test
@@ -42,7 +42,7 @@ jobs:
   build-java-project:
     name: Build java project
     runs-on: ubuntu-latest
-    needs: [run-unit-tests,scan-vulnerabilities]
+    needs: [run-unit-tests]
     steps:
       - name: Checkout🚀
         uses: actions/checkout@v3.5.3
@@ -99,6 +99,7 @@ jobs:
           IMAGE_NAME: 'delivery-pipeline-devops-foundation'
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
+          ls -lhart
           echo REGISTRY: $REGISTRY
           echo IMAGE_TAG: $IMAGE_TAG
           echo "Building and tagging $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ..."

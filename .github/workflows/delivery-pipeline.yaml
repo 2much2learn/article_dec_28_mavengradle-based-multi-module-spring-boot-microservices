@@ -109,5 +109,5 @@ jobs:
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
           docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
-          docker push "krlosaren/$IMAGE_NAME:$IMAGE_TAG" 
+          docker push krlosaren/$IMAGE_NAME:$IMAGE_TAG 
 

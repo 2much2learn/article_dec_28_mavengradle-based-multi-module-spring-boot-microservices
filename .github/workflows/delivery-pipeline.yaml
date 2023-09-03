@@ -9,7 +9,7 @@ jobs:
 
   run-unit-tests:
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         id: running-tests
@@ -41,7 +41,7 @@ jobs:
       
   build-java-project:
     name: Build java project
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [run-unit-tests]
     steps:
       - name: Checkout🚀
@@ -74,7 +74,7 @@ jobs:
     outputs:
       full_docker_image_tag: '${{ steps.build_image.outputs.full_docker_image_tag }}'
       image_tag: '${{ steps.build_image.outputs.image_tag }}'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [run-unit-tests,build-java-project]
     steps:
       

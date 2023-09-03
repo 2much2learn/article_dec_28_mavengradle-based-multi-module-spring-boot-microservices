@@ -109,6 +109,7 @@ jobs:
           docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
           mkdir -p /tmp
           docker save "$REGISTRY/krlosaren/$IMAGE_NAME:$IMAGE_TAG" > /tmp/docker-image.tar
+          docker images
           docker push "krlosaren/$IMAGE_NAME:$IMAGE_TAG" 
           echo "full_docker_image_tag=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
           echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT

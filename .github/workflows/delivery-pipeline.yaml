@@ -89,5 +89,5 @@ jobs:
       - name: deploy apps
         run: |
           ls -lhart
-          kubectl appy -f k8s
+          kubectl apply -f k8s
           curl http://localhost:8081/greeting

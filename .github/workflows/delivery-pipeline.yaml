@@ -39,76 +39,63 @@ jobs:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       #   run: ./gradlew build sonar --info
       
-  build-java-project:
-    name: Build java project
+  # build-java-project:
+  #   name: Build java project
+  #   runs-on: self-hosted
+  #   needs: [run-unit-tests]
+  #   steps:
+  #     - name: Checkout🚀
+  #       uses: actions/checkout@v3.5.3
+
+  #     - name: Setup JAVA JDK
+  #       uses: actions/setup-java@v3.12.0
+  #       with:
+  #         java-version: '11'
+  #         distribution: 'zulu'
+
+  #     - name: Compile Gradle
+  #       id: compile-gradle
+  #       run: |
+  #         chmod +x gradlew
+  #         ./gradlew build
+      
+  #     - name: Upload JARs
+  #       uses: actions/upload-artifact@v3.1.2
+  #       with:
+  #         name: build
+  #         path: |
+  #           service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar
+  #           service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar
+  #           service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar
+  #         retention-days: 1
+
+  deploy-on-k8s:
+    name: Build docker image
     runs-on: self-hosted
     needs: [run-unit-tests]
     steps:
-      - name: Checkout🚀
-        uses: actions/checkout@v3.5.3
-
-      - name: Setup JAVA JDK
-        uses: actions/setup-java@v3.12.0
-        with:
-          java-version: '11'
-          distribution: 'zulu'
-
-      - name: Compile Gradle
-        id: compile-gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew build
-      
-      - name: Upload JARs
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: build
-          path: |
-            service-a/build/libs/service-a-0.0.1-SNAPSHOT.jar
-            service-b/build/libs/service-b-0.0.1-SNAPSHOT.jar
-            service-c/build/libs/service-c-0.0.1-SNAPSHOT.jar
-          retention-days: 1
-
-  docker-build:
-    name: Build docker image
-    outputs:
-      full_docker_image_tag: '${{ steps.build_image.outputs.full_docker_image_tag }}'
-      image_tag: '${{ steps.build_image.outputs.image_tag }}'
-    runs-on: self-hosted
-    needs: [run-unit-tests,build-java-project]
-    steps:
       
       - name: Checkout🚀
         uses: actions/checkout@v3.5.3
-    
-      - name: Add SHORT_SHA and BRANCH_TAG env variables
+
+      - name: Start minikube
+        uses: medyagh/setup-minikube@latest
+      # now you can run kubectl to see the pods in the cluster
+      - name: Try the cluster!
+        run: kubectl get pods -A
+      - name: Build image
         run: |
-          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-          echo "BRANCH_TAG=`echo ${GITHUB_REF##*/}`" >> $GITHUB_ENV
-
-      - name: Set IMAGE_TAG env variable
+          export SHELL=/bin/bash
+          eval $(minikube -p minikube docker-env)
+          make build-image
+          echo -n "verifying images:"
+          docker images
+      - name: Deploy to minikube
         run: |
-          echo "IMAGE_TAG=`echo ${BRANCH_TAG}-${SHORT_SHA}`" >> $GITHUB_ENV
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-            name: build
-      
-      - name: Docker login
-        uses: docker/login-action@v2.2.0
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and tag image
-        id: build_image
-        env:
-          REGISTRY: 'hub.docker.com'
-          IMAGE_NAME: 'delivery-pipeline-devops-foundation'
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          kubectl apply -f k8s
+      - name: Test service URLs
         run: |
-          docker build -t krlosaren/$IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
-          docker images 
-          docker push krlosaren/$IMAGE_NAME:$IMAGE_TAG 
-
+          minikube service list
+          minikube service discover --url
+          echo -n "------------------opening the service------------------"
+          curl $(minikube service discover --url)/version

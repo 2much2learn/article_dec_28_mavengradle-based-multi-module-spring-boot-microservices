@@ -88,6 +88,6 @@ jobs:
           alias kubectl="minikube kubectl --"
       - name: deploy apps
         run: |
-          la -lhart
+          ls -lhart
           kubectl appy -f k8s
           curl http://localhost:8081/greeting

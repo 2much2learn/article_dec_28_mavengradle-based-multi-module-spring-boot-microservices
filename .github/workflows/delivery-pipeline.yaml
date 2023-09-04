@@ -78,24 +78,16 @@ jobs:
       - name: Checkout🚀
         uses: actions/checkout@v3.5.3
 
-      - name: Start minikube
-        uses: medyagh/setup-minikube@latest
       # now you can run kubectl to see the pods in the cluster
-      - name: Try the cluster!
-        run: kubectl get pods -A
-      - name: Build image
+      - name: Install Minikube
+        run : |
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
+          minikube start
+          kubectl get po -A
+          alias kubectl="minikube kubectl --"
+      - name: deploy apps
         run: |
-          export SHELL=/bin/bash
-          eval $(minikube -p minikube docker-env)
-          make build-image
-          echo -n "verifying images:"
-          docker images
-      - name: Deploy to minikube
-        run: |
-          kubectl apply -f k8s
-      - name: Test service URLs
-        run: |
-          minikube service list
-          minikube service discover --url
-          echo -n "------------------opening the service------------------"
-          curl $(minikube service discover --url)/version
+          la -lhart
+          kubectl appy -f k8s
+          curl http://localhost:8081/greeting

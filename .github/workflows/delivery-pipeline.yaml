@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+        run: ./gradlew clean :list:build :list:sonarqube --info
 
   deploy-on-k8s:
     name: Build docker image
@@ -75,3 +75,4 @@ jobs:
           chmod +x ./scripts/wait-pod
           ./scripts/wait-pod
           minikube service list
+          curl $(minikube service springboot-service-a-svc --url)

@@ -1,23 +1,14 @@
-name: Containerize and Deploy
+name: Checkout Workflow
 
 on:
   push:
     branches:
-      - feature-ms-davidsilva-cicd
+      - feature-ms-davidsilva-cicd  # Cambia 'main' al nombre de tu rama principal si es diferente
 
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: List Maven modules
-        run: mvn help:evaluate -Dexpression=project.modules
-
-      - name: Build and create Docker images
-        run: mvn clean package spring-boot:build-image
-
-      - name: Execute Maven goal on specific module
-        run: mvn clean spring-boot:run -pl service-a
+    - name: Checkout Repository
+      uses: actions/checkout@v2

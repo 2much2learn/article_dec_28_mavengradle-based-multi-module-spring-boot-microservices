@@ -42,11 +42,12 @@ subprojects {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	}
 
+		sonar {
 	properties {
 		property "sonar.projectKey", "KrlosAren_article_dec_28_mavengradle-based-multi-module-spring-boot-microservices"
 		property "sonar.organization", "krlosaren"
 		property "sonar.host.url", "https://sonarcloud.io"
-		}
+	}
 	}
 
 

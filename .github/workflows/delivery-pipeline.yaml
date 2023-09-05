@@ -28,11 +28,25 @@ jobs:
         id: running-tests
         uses: actions/checkout@v3.5.3
 
-      - name: Run SonarCloud tests
-        id: running-sonarcloud-test
-        run: |
-            chmod +x gradlew
-            ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+        
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonar --info
 
   deploy-on-k8s:
     name: Build docker image
@@ -60,6 +74,4 @@ jobs:
         run: |
           chmod +x ./scripts/wait-pod
           ./scripts/wait-pod
-          minikube service springboot-service-a --url
-          echo "------------------opening the service------------------"
-          curl $(minikube service springboot-service-a --url)  
+          minikube service list

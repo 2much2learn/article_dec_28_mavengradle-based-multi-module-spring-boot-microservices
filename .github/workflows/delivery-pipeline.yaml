@@ -28,17 +28,11 @@ jobs:
         id: running-tests
         uses: actions/checkout@v3.5.3
 
-      # - name: Run SonarCloud tests
-      #   id: running-sonarcloud-test
-      #   run: |
-      #       chmod +x gradlew
-      #       ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       - name: Run SonarCloud tests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
-      
+        id: running-sonarcloud-test
+        run: |
+            chmod +x gradlew
+            ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
   deploy-on-k8s:
     name: Build docker image
@@ -64,7 +58,8 @@ jobs:
       
       - name : test endpoint
         run: |
-          minikube service springboot-service-a-svc
-          minikube service springboot-service-a-svc --url
+          chmod +x ./scripts/wait-pod
+          ./scripts/wait-pod
+          minikube service springboot-service-a --url
           echo "------------------opening the service------------------"
-          curl $(minikube service springboot-service-a-svc --url)  
+          curl $(minikube service springboot-service-a --url)  

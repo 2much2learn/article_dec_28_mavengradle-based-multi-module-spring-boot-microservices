@@ -3,7 +3,7 @@ name: Build and Test
 on:
   push:
     branches:
-      - feature-ms-davidsilva-cicd  # Cambiar esto si tu rama principal se llama de manera diferente
+      - feature-ms-davidsilva-cicd
 
 jobs:
   build:
@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: Adopt
 
       - name: Build project
         run: ./gradlew build

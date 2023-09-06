@@ -1,26 +1,33 @@
-name: SonarCloud Analysis
-
+name: CI Infra as Code
 on:
-  push:
-    branches:
-      - feature-ms-davidsilva-cicd # Cambia "main" por el nombre de tu rama principal
-
+  [workflow_dispatch, push]
+concurrency: ci-${{ github.ref }}
 jobs:
-  sonarcloud:
+
+  trivy:
+    name: Run Trivy (Iac and fs mode)
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Check out Git repository
+        uses: actions/checkout@v3
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'  # Cambia "11" si necesitas una versión diferente de Java
-        distribution: 'adopt'
+     
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          hide-progress: false
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: false
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
-    - name: Run SonarCloud analysis
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          hide-progress: false
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: false
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'

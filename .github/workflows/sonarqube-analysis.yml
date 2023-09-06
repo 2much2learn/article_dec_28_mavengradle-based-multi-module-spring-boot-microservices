@@ -22,5 +22,5 @@ jobs:
     - name: Run SonarCloud analysis
       uses: sonarsource/sonarcloud-github-action@master
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Asegúrate de que tienes configurado un secret llamado "GITHUB_TOKEN" en tu repositorio
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 

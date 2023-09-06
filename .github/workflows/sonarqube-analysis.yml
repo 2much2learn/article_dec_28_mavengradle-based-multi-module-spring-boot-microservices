@@ -1,33 +1,25 @@
-name: CI Infra as Code
+name: Dependency Vulnerability Analysis
+
 on:
-  [workflow_dispatch, push]
-concurrency: ci-${{ github.ref }}
+  push:
+    branches:
+      - feature-ms-davidsilva-cicd
+
 jobs:
-
-  trivy:
-    name: Run Trivy (Iac and fs mode)
+  dependency_vulnerability_analysis:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-     
-      - name: Run Trivy vulnerability scanner in IaC mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'config'
-          hide-progress: false
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: false
-          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
 
-      - name: Run Trivy vulnerability scanner in fs mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          hide-progress: false
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: false
-          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+    - name: Run vulnerability analysis
+      run: |
+        ./mvnw dependency-check:check  # Cambia "./mvnw" si utilizas otro comando para construir tu proyecto
+

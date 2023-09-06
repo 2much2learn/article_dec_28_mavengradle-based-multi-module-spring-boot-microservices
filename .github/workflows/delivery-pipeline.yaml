@@ -61,4 +61,7 @@ jobs:
           ./scripts/wait-pod
           kubectl get services -o wide
           kubectl port-forward service/springboot-service-a-svc 8081:8080 &
+      
+      - name: Testing Deployments endpoints
+        run: |
           curl http://localhost:8081/greeting

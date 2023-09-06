@@ -3,7 +3,7 @@ name: Dockerize Maven Modules
 on:
   push:
     branches:
-      - feature-ms-davidsilva-cicd
+      - main
 
 jobs:
   build:
@@ -17,8 +17,32 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt'
-        
+
     - name: Build and create Docker images
+      id: build-image
       run: |
-        mvn clean package spring-boot:build-image
+        IMAGE_NAME=$(echo "$(basename $(pwd))" | tr '[:upper:]' '[:lower:]')
+        IMAGE_NAME="${IMAGE_NAME}-$(date +'%Y%m%d%H%M%S')"
+        mvn clean package spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME
+
+    - name: Save Docker image as tar file
+      run: |
+        docker save -o $IMAGE_NAME.tar $IMAGE_NAME
+
+    - name: Upload Docker image to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        key: ${{ secrets.SERVER_PRIVATE_KEY }}
+        source: $IMAGE_NAME.tar
+        target: /path/to/destination/$IMAGE_NAME.tar
+
+    - name: Load Docker image on server
+      run: |
+        ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "docker load -i /path/to/destination/$IMAGE_NAME.tar"
+
+    - name: Run Docker container on server
+      run: |
+        ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "docker run -d -p 8080:8080 $IMAGE_NAME"

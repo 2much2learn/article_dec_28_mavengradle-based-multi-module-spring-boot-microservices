@@ -37,4 +37,4 @@ jobs:
       run: |
         # Agrega aquí el comando para ejecutar tus pruebas unitarias personalizadas
         # Por ejemplo, si estás usando Maven y tu archivo se llama personaltest.yaml
-        mvn test -f docker-build-and-test.yml
+        mvn test -f personaltest.yaml

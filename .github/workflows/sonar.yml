@@ -20,4 +20,5 @@ jobs:
       - name: Analizar dependencias
         run: |
           # Ejecutar el análisis de dependencias aquí
+          sonar-scanner -Dsonar.projectKey=my-project -Dsonar.sources=. -Dsonar.dependencyCheck.enabled=true
 

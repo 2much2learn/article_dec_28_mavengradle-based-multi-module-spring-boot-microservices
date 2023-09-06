@@ -1,4 +1,4 @@
-name: Análisis de dependencias con SonarQube
+name: Análisis SonarQube
 
 on:
   push:
@@ -6,19 +6,26 @@ on:
       - feature-ms-davidsilva-cicd
 
 jobs:
-  build:
+  sonarqube:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código fuente
+      - name: Checkout del repositorio
         uses: actions/checkout@v2
 
-      - name: Levantar contenedor de SonarQube
-        run: |
-          docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
+      - name: Levantar contenedor SonarQube
+        uses: docker/compose-action@v1
+        with:
+          compose-file: docker-compose.yml
+          compose-options: -f docker-compose.yml up -d
 
-      - name: Analizar dependencias
+      - name: Configurar SonarQube
         run: |
-          # Ejecutar el análisis de dependencias aquí
-          sonar-scanner -Dsonar.projectKey=my-project -Dsonar.sources=. -Dsonar.dependencyCheck.enabled=true
+          sleep 30 # Esperar 30 segundos para que el contenedor SonarQube se inicie correctamente
+          sonar-scanner -Dsonar.projectKey=my-project -Dsonar.sources=. -Dsonar.dependencyCheck.enabled=true -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin
 
+      - name: Detener y eliminar contenedor SonarQube
+        uses: docker/compose-action@v1
+        with:
+          compose-file: docker-compose.yml
+          compose-options: -f docker-compose.yml down

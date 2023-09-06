@@ -16,8 +16,8 @@ jobs:
       - name: Levantar contenedor SonarQube
         uses: docker/compose-action@v1
         with:
-          compose-file: docker-compose.yml
-          compose-options: -f docker-compose.yml up -d
+          compose-file: docker-compose1.yml
+          compose-options: -f docker-compose1.yml up -d
 
       - name: Configurar SonarQube
         run: |
@@ -27,5 +27,5 @@ jobs:
       - name: Detener y eliminar contenedor SonarQube
         uses: docker/compose-action@v1
         with:
-          compose-file: docker-compose.yml
-          compose-options: -f docker-compose.yml down
+          compose-file: docker-compose1.yml
+          compose-options: -f docker-compose1.yml down

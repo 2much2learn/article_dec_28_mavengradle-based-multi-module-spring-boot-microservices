@@ -59,6 +59,6 @@ jobs:
         run: |
           chmod +x ./scripts/wait-pod
           ./scripts/wait-pod
-          minikube service list
+          kubectl get services -o wide
           kubectl port-forward service/springboot-service-a 8081:8080
           curl http://localhost:8081/greeting

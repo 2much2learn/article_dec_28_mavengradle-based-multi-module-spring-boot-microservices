@@ -1,0 +1,32 @@
+name: Deploy to Docker Container
+
+on:
+  push:
+    branches:
+      - feature-ms-davidsilva-cicd
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Pull Docker Image
+      run: docker pull tuusuario/tuimagen:tag
+
+    - name: Stop and Remove Existing Container
+      run: docker stop mi-contenedor || true && docker rm mi-contenedor || true
+
+    - name: Run Docker Container
+      run: docker run -d --name mi-contenedor -p 8080:80 tuusuario/tuimagen:tag
+
+    - name: Wait for Container to Start
+      run: sleep 10  # Puedes ajustar este tiempo según sea necesario

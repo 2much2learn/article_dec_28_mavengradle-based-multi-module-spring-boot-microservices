@@ -31,4 +31,5 @@ jobs:
           JAVA_HOME: /opt/hostedtoolcache/Java_Adopt_jdk/11.0.20-101/x64
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://github.com/titanrex/article_dec_28_mavengradle-based-multi-module-spring-boot-microservices/actions/runs/6101119143/job/16556785327s://
 

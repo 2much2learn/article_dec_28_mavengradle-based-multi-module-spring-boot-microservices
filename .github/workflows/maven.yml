@@ -1,4 +1,4 @@
-name: Build and Test with Maven
+name: Build and test
 
 on:
   push:
@@ -17,8 +17,6 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt' # Puedes usar 'adopt', 'openjdk', o 'zulu', según tu preferencia
-
 
     - name: Build with Maven
       run: mvn clean install
@@ -26,4 +24,15 @@ jobs:
     - name: Run unit tests
       run: mvn test
 
+  run-personal-tests:
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run personal tests
+      run: |
+        # Agrega aquí el comando para ejecutar tus pruebas unitarias personalizadas
+        # Por ejemplo, si estás usando Maven y tu archivo se llama personaltest.yaml
+        mvn test -f personaltest.yaml

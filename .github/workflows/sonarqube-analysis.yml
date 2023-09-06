@@ -21,6 +21,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          
+      - name: Grant execute permission to gradlew
+        run: chmod +x ./gradlew
 
       - name: Ejecutar análisis de dependencias
         uses: gradle/gradle-build-action@v1

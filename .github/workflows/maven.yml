@@ -26,11 +26,4 @@ jobs:
     - name: Run unit tests
       run: mvn test
 
-    - name: Generate code coverage report
-      run: mvn cobertura:cobertura
 
-    - name: Upload code coverage results
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage
-        path: target/site/cobertura

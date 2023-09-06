@@ -1,4 +1,4 @@
-name: Deploy to Docker Container
+name: Dockerize Maven Modules
 
 on:
   push:
@@ -6,27 +6,19 @@ on:
       - feature-ms-davidsilva-cicd
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
+    - name: Set up JDK
+      uses: actions/setup-java@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Pull Docker Image
-      run: docker pull tuusuario/tuimagen:tag
-
-    - name: Stop and Remove Existing Container
-      run: docker stop mi-contenedor || true && docker rm mi-contenedor || true
-
-    - name: Run Docker Container
-      run: docker run -d --name mi-contenedor -p 8080:80 tuusuario/tuimagen:tag
-
-    - name: Wait for Container to Start
-      run: sleep 10  # Puedes ajustar este tiempo según sea necesario
+        java-version: '11'
+        distribution: 'adopt'
+        
+    - name: Build and create Docker images
+      run: |
+        mvn clean package spring-boot:build-image

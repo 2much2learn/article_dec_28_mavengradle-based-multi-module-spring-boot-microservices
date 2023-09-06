@@ -1,23 +1,26 @@
-name: Vulnerability Analysis
+
+name: Automatic Code Analysis
 
 on:
   push:
     branches:
       - feature-ms-davidsilva-cicd
+
 jobs:
-  analyze-vulnerabilities:
+  analyze-code:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - name: Set up Docker
+      uses: actions/setup-python@v2
       with:
-        node-version: '14'  # Puedes cambiar la versión de Node.js según tus necesidades
+        python-version: '3.9'
 
-    - name: Run vulnerability analysis
+    - name: Build Docker image
       run: |
-        npm install
-        npm audit
+        docker build -t code-analysis-image .
+        docker run --rm code-analysis-image
+

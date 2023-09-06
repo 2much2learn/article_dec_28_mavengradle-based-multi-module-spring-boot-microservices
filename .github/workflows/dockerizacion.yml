@@ -3,7 +3,7 @@ name: Dockerize Maven Modules
 on:
   push:
     branches:
-      - main
+      - feature-ms-davidsilva-cicd
 
 jobs:
   build:

@@ -1,0 +1,34 @@
+name: Check Any Container Status
+
+on:
+  push:
+    branches:
+      - feature-ms-davidsilva-cicd
+
+jobs:
+  check-container-status:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      run: |
+        # Instala Docker si no está instalado
+        if ! command -v docker &> /dev/null; then
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+        fi
+
+    - name: Run Container Check Test
+      run: |
+        RUNNING_CONTAINERS=$(docker ps --format "{{.Names}}" | tr '\n' ' ')
+        
+        if [ -z "$RUNNING_CONTAINERS" ]; then
+          echo "No hay contenedores en funcionamiento en el repositorio."
+          exit 1  # Fallo
+        else
+          echo "Hay contenedores en funcionamiento en el repositorio: $RUNNING_CONTAINERS"
+          exit 0  # Éxito
+        fi

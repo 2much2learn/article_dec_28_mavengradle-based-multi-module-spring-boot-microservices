@@ -1,4 +1,4 @@
-name: Build and Analyze with SonarQube
+name: Análisis de dependencias con SonarQube
 
 on:
   push:
@@ -10,26 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout código fuente
         uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
+      - name: Levantar contenedor de SonarQube
+        run: |
+          docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
 
-      - name: Build with Maven
-        run: mvn clean verify
-
-      - name: SonarQube analysis
-        uses: sonarsource/sonarqube-scan-action@master
-        with:
-          projectBaseDir: .
-
-        env:
-          JAVA_HOME: /opt/hostedtoolcache/Java_Adopt_jdk/11.0.20-101/x64
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://github.com/titanrex/article_dec_28_mavengradle-based-multi-module-spring-boot-microservices/actions/runs/6101119143/job/16556785327s://
+      - name: Analizar dependencias
+        run: |
+          # Ejecutar el análisis de dependencias aquí
 

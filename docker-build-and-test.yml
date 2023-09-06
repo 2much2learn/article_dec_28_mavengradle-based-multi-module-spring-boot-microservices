@@ -1,0 +1,20 @@
+import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+@Testcontainers
+public class DockerIntegrationTest {
+
+    @Container
+    private static final DockerComposeContainer<?> dockerComposeContainer =
+        new DockerComposeContainer<>(new File("docker-compose.yml"))
+            .withLocalCompose(true)
+            .withExposedService("app", 8080, Wait.forHttp("/").forStatusCode(200));
+
+    @Test
+    public void testDockerizedApp() {
+        // Ejecuta pruebas específicas para tu aplicación Dockerizada
+    }
+}

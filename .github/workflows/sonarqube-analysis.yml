@@ -21,18 +21,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./gradlew
-
-      - name: Ejecutar análisis de dependencias
-        uses: gradle/gradle-build-action@v1
-        with:
-          tasks: dependencies
 
       - name: Ejecutar análisis estático de código
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 

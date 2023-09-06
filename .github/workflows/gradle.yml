@@ -1,0 +1,22 @@
+name: Gradle Build and Test
+
+on:
+  push:
+    branches:
+      - feature-ms-davidsilva-cicd
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'  # Reemplaza con la versión de Java que necesites
+
+    - name: Build with Gradle
+      run: ./gradlew build

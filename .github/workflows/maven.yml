@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
+        distribution: 'adopt' # Puedes usar 'adopt', 'openjdk', o 'zulu', según tu preferencia
+
 
     - name: Build with Maven
       run: mvn clean install

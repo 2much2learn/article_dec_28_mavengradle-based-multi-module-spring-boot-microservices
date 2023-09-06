@@ -1,4 +1,4 @@
-name: Dependency Vulnerability Analysis
+name: Escaneo Automático de Vulnerabilidades
 
 on:
   push:
@@ -6,22 +6,19 @@ on:
       - feature-ms-davidsilva-cicd
 
 jobs:
-  dependency_vulnerability_analysis:
+  vulnerability_scanning:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout de código
       uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
+    - name: Escaneo automático de vulnerabilidades
+      uses: securityscan/security-scan-action@v1
 
-    - name: Run vulnerability analysis
-      run: |
-        ./mvnw dependency-check:check  # Cambia "./mvnw" si utilizas otro comando para construir tu proyecto
+    - name: Mostrar resultados del escaneo
+      run: cat security-scan-results.txt
+
 
 
 

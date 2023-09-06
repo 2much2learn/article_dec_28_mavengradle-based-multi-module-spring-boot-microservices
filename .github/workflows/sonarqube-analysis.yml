@@ -1,29 +1,26 @@
-name: Análisis de dependencias y código
+name: SonarCloud Analysis
 
 on:
   push:
     branches:
-      - feature-ms-davidsilva-cicd
-  pull_request:
-    branches:
-      - feature-ms-davidsilva-cicd
+      - feature-ms-davidsilva-cicd # Cambia "main" por el nombre de tu rama principal
 
 jobs:
-  analyze:
+  sonarcloud:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código fuente
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Configurar Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'  # Cambia "11" si necesitas una versión diferente de Java
+        distribution: 'adopt'
 
-      - name: Ejecutar análisis estático de código
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run SonarCloud analysis
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Asegúrate de que tienes configurado un secret llamado "GITHUB_TOKEN" en tu repositorio
 

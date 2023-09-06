@@ -21,7 +21,7 @@ jobs:
           ./gradlew test
     
   scan-vulnerabilities:
-    name: Vulnerabilities scanner
+    name: Vulnerabilities scanner 🧨
     runs-on: ubuntu-latest
     needs: [run-unit-tests]
     steps:
@@ -29,13 +29,13 @@ jobs:
         id: running-tests
         uses: actions/checkout@v3.5.3
 
-      - name: Analisis SonarCloud 🧨
+      - name: Analisis SonarCloud
         run: |
           chmod +x gradlew
           ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-
+  
   deploy-on-k8s:
-    name: Build docker image
+    name: Build docker image 👾
     runs-on: ubuntu-latest
     needs: [run-unit-tests, scan-vulnerabilities]
     steps:
@@ -43,22 +43,22 @@ jobs:
       - name: Checkout🚀
         uses: actions/checkout@v3.5.3
       
-      # now you can run kubectl to see the pods in the cluster
       - uses: actions/checkout@v2
       - name: Start minikube
         
         uses: medyagh/setup-minikube@master
-      - name: Try the cluster !
+      - name: Get pods
         run: kubectl get pods -A
 
-      - name: deploy apps
+      - name: Deploy apps
         run: |
           ls -lhart
           kubectl apply -f k8s
       
-      - name : test endpoint
+      - name : Check Deployments
         run: |
           chmod +x ./scripts/wait-pod
           ./scripts/wait-pod
           minikube service list
-          curl $(minikube service springboot-service-a-svc --url)
+          kubectl port-forward service/springboot-service-a 8081:8080
+          curl http://localhost:8081/greeting

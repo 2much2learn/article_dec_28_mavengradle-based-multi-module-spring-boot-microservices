@@ -1,31 +1,34 @@
-name: Análisis SonarQube
+name: Análisis de dependencias y código
 
 on:
   push:
     branches:
       - feature-ms-davidsilva-cicd
+  pull_request:
+    branches:
+      - feature-ms-davidsilva-cicd
 
 jobs:
-  sonarqube:
+  analyze:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del repositorio
+      - name: Checkout código fuente
         uses: actions/checkout@v2
 
-      - name: Levantar contenedor SonarQube
-        uses: docker/compose-action@v1
+      - name: Configurar Java
+        uses: actions/setup-java@v2
         with:
-          compose-file: docker-compose1.yml
-          compose-options: -f docker-compose1.yml up -d
+          java-version: '11'
 
-      - name: Configurar SonarQube
-        run: |
-          sleep 30 # Esperar 30 segundos para que el contenedor SonarQube se inicie correctamente
-          sonar-scanner -Dsonar.projectKey=my-project -Dsonar.sources=. -Dsonar.dependencyCheck.enabled=true -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin
-
-      - name: Detener y eliminar contenedor SonarQube
-        uses: docker/compose-action@v1
+      - name: Ejecutar análisis de dependencias
+        uses: gradle/gradle-build-action@v1
         with:
-          compose-file: docker-compose1.yml
-          compose-options: -f docker-compose1.yml down
+          tasks: dependencies
+
+      - name: Ejecutar análisis estático de código
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+

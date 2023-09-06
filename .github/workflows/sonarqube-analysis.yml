@@ -13,8 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      run: |
-        docker build -t code-analysis-image .
-        docker run --rm code-analysis-image npm install
-        docker run --rm code-analysis-image npm audit
+    - name: Run Super-Linter
+      uses: github/super-linter@v4
+      env:
+        VALIDATE_ALL_CODEBASE: "true"

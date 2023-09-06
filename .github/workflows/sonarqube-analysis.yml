@@ -1,4 +1,4 @@
-name: Escaneo Automático de Vulnerabilidades
+name: Vulnerability Analysis
 
 on:
   push:
@@ -6,19 +6,22 @@ on:
       - feature-ms-davidsilva-cicd
 
 jobs:
-  vulnerability_scanning:
+  analyze-vulnerabilities:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout de código
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Escaneo automático de vulnerabilidades
-      uses: securityscan/security-scan-action@v1
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-    - name: Mostrar resultados del escaneo
-      run: cat security-scan-results.txt
+    - name: Install dependencies
+      run: npm install
 
-
+    - name: Run vulnerability analysis
+      run: npm audit
 
 

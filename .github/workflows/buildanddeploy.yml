@@ -19,10 +19,6 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Build Gradle projects
-      run: |
-        ./gradlew clean build bootBuildImage
-
     - name: Start service-a
       run: |
         java -jar service-a/target/service-a-0.0.1-SNAPSHOT.jar &

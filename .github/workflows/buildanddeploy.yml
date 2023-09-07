@@ -19,14 +19,6 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Build and package Maven modules
-      run: |
-        mvn help:evaluate -Dexpression=project.modules
-        mvn clean package spring-boot:build-image -pl service-a
-        
-    - name: Grant execute permission to gradlew
-      run: chmod +x ./gradlew
-
     - name: Build Gradle projects
       run: |
         ./gradlew clean build bootBuildImage

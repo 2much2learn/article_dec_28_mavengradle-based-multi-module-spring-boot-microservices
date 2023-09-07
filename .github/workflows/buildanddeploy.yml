@@ -27,14 +27,6 @@ jobs:
     - name: Start service-a
       run: |
         java -jar service-a/target/service-a-0.0.1-SNAPSHOT.jar &
-
-    - name: Start service-b
-      run: |
-        java -jar service-b/target/service-b-0.0.1-SNAPSHOT.jar &
-
-    - name: Start service-c
-      run: |
-        java -jar service-c/target/service-c-0.0.1-SNAPSHOT.jar &
         
     - name: Debug Current Directory
       run: |
@@ -46,8 +38,6 @@ jobs:
     - name: Test services with curl
       run: |
         curl http://localhost:8081/greeting
-        curl http://localhost:8082/greeting
-        curl http://localhost:8083/greeting
 
     - name: List Docker images
       run: docker images | grep spring-multi-module

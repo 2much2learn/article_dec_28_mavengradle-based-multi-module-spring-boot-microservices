@@ -34,8 +34,7 @@ jobs:
     - name: Debug Current Directory
       run: |
         pwd
-        shell: /usr/bin/bash -e {0}
-
+        
     - name: Wait for services to start
       run: sleep 10 # Adjust the sleep duration as needed to allow services to start.
 

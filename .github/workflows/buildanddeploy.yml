@@ -30,6 +30,11 @@ jobs:
     - name: Start service-c
       run: |
         java -jar service-c/target/service-c-0.0.1-SNAPSHOT.jar &
+        
+    - name: Debug Current Directory
+      run: |
+        pwd
+        shell: /usr/bin/bash -e {0}
 
     - name: Wait for services to start
       run: sleep 10 # Adjust the sleep duration as needed to allow services to start.

@@ -23,15 +23,13 @@ jobs:
       run: |
         mvn help:evaluate -Dexpression=project.modules
         mvn clean package spring-boot:build-image -pl service-a
-        rootProject.name='spring-multi-module-service'
-        include 'service-a'
-        include 'service-b'
-        include 'service-c'
+        
+    - name: Grant execute permission to gradlew
+      run: chmod +x ./gradlew
 
     - name: Build Gradle projects
       run: |
         ./gradlew clean build bootBuildImage
-        ./gradlew clean :service-a:build :service-a:bootBuildImage
 
     - name: Start service-a
       run: |
@@ -53,3 +51,12 @@ jobs:
         curl http://localhost:8081/greeting
         curl http://localhost:8082/greeting
         curl http://localhost:8083/greeting
+
+    - name: List Docker images
+      run: docker images | grep spring-multi-module
+
+    - name: Deploy services using Docker
+      run: |
+        docker run -d -p 8081:8080 -e spring.profiles.active=prod -e serviceb.url=http://<HOST_IP>:8082 -e servicec.url=http://<HOST_IP>:8083 $DOCKER_USER_NAME/spring-multi-module-service-service-a
+        docker run -d -p 8082:8080 -e spring.profiles.active=prod $DOCKER_USER_NAME/spring-multi-module-service-service-b
+        docker run -d -p 8083:8080 -e spring.profiles.active=prod $DOCKER_USER_NAME/spring-multi-module-service-service-c

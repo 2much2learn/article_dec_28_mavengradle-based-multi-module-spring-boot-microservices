@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy Services
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - feature-ms-davidsilva-cicd
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,46 +16,39 @@ jobs:
     - name: Set up Java
       uses: actions/setup-java@v2
       with:
-        java-version: '11' # Change to the appropriate Java version
+        java-version: '11'
 
-    - name: Build and package service-a
-      run: mvn clean package spring-boot:build-image -pl service-a
+    - name: Build and package Maven modules
+      run: |
+        mvn help:evaluate -Dexpression=project.modules
+        mvn clean package spring-boot:build-image -pl service-a
+        rootProject.name='spring-multi-module-service'
+        include 'service-a'
+        include 'service-b'
+        include 'service-c'
 
-    - name: Build and package service-b
-      run: mvn clean package spring-boot:build-image -pl service-b
-
-    - name: Build and package service-c
-      run: mvn clean package spring-boot:build-image -pl service-c
-
-    - name: Build Gradle project
+    - name: Build Gradle projects
       run: |
         ./gradlew clean build bootBuildImage
-      working-directory: ${{ github.workspace }}
+        ./gradlew clean :service-a:build :service-a:bootBuildImage
 
-    - name: Start Docker containers
+    - name: Start service-a
       run: |
-        docker run -d -p 8081:8080 -e spring.profiles.active=prod -e serviceb.url=http://localhost:8082 -e servicec.url=http://localhost:8083 $DOCKER_USER_NAME$/spring-multi-module-service-service-a
-        docker run -d -p 8082:8080 -e spring.profiles.active=prod $DOCKER_USER_NAME$/spring-multi-module-service-service-b
-        docker run -d -p 8083:8080 -e spring.profiles.active=prod $DOCKER_USER_NAME$/spring-multi-module-service-service-c
-      env:
-        DOCKER_USER_NAME: ${{ secrets.DOCKER_USER_NAME }} # You should store your Docker username as a secret in your repository
+        java -jar service-a/target/service-a-0.0.1-SNAPSHOT.jar &
 
-    - name: Wait for containers to start
-      run: sleep 10
+    - name: Start service-b
+      run: |
+        java -jar service-b/target/service-b-0.0.1-SNAPSHOT.jar &
 
-    - name: Test service endpoints
+    - name: Start service-c
+      run: |
+        java -jar service-c/target/service-c-0.0.1-SNAPSHOT.jar &
+
+    - name: Wait for services to start
+      run: sleep 10 # Adjust the sleep duration as needed to allow services to start.
+
+    - name: Test services with curl
       run: |
         curl http://localhost:8081/greeting
         curl http://localhost:8082/greeting
         curl http://localhost:8083/greeting
-
-    - name: Check Docker images
-      run: docker images | grep spring-multi-module
-
-    - name: Deploy service-a
-      run: |
-        docker push $DOCKER_USER_NAME$/spring-multi-module-service-service-a
-        # You may need to deploy service-b and service-c in a similar manner
-
-    - name: Deploy to Production (if needed)
-      # Add steps for deploying to production, if necessary

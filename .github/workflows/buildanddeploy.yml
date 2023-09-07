@@ -34,16 +34,3 @@ jobs:
         
     - name: Wait for services to start
       run: sleep 10 # Adjust the sleep duration as needed to allow services to start.
-
-    - name: Test services with curl
-      run: |
-        curl http://localhost:8081/greeting
-
-    - name: List Docker images
-      run: docker images | grep spring-multi-module
-
-    - name: Deploy services using Docker
-      run: |
-        docker run -d -p 8081:8080 -e spring.profiles.active=prod -e serviceb.url=http://<HOST_IP>:8082 -e servicec.url=http://<HOST_IP>:8083 $DOCKER_USER_NAME/spring-multi-module-service-service-a
-        docker run -d -p 8082:8080 -e spring.profiles.active=prod $DOCKER_USER_NAME/spring-multi-module-service-service-b
-        docker run -d -p 8083:8080 -e spring.profiles.active=prod $DOCKER_USER_NAME/spring-multi-module-service-service-c

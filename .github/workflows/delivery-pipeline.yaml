@@ -33,14 +33,16 @@ jobs:
       
       - name: Configure Jmeter 🚀
         run: |
-            echo "Hello"
+            cd $GITHUB_WORKSPACE
             wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.zip
             unzip apache-jmeter-5.6.2.zip
+            ls -lhart
             
       - name: Running Performance testing 🏃🏻‍♂️
         run: |
-          cd apache-jmeter-5.6.2/bin
-          ./jmeter.sh -n -t jmeter/service_testing.jmx -l jmeter/results.csv -e -o jmeter/reports
+          ls -lhart
+          cd $GITHUB_WORKSPACE/apache-jmeter-5.6.2/bin
+          ./jmeter.sh -n -t $GITHUB_WORKSPACE/article_dec_28_mavengradle-based-multi-module-spring-boot-microservices/jmeter/service_testing.jmx -l $GITHUB_WORKSPACE/article_dec_28_mavengradle-based-multi-module-spring-boot-microservices/jmeter/results.csv -e -o $GITHUB_WORKSPACE/article_dec_28_mavengradle-based-multi-module-spring-boot-microservices/jmeter/reports
       
       - name: Analisis SonarCloud 🧨
         run: |

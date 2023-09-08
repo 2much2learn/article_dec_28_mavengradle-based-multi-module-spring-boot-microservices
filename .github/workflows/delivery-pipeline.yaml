@@ -70,10 +70,12 @@ jobs:
           kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl get service -o wide
           kubectl port-forward service/springboot-service-a-svc 8081:8080 &
-
-      - name: Testing Api Endpoint Postman 🤌🏼
-        run: |
+          
+          - name: Testing Api Endpoint Postman 🤌🏼
+          run: |
           sleep 8
+          kubectl wait --for condition=ready $(kubectl get pod -o name)
+          kubectl get pods -A -o wide
           postman collection run "11051031-c3f4f5b1-57df-46ac-a1cd-fbd75bb9a183" -e "11051031-b84eb404-b1bb-4628-a930-4747273c6076"
       
       - name: Shutdown Application 🧑🏻‍💻

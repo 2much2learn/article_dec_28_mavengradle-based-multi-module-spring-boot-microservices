@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  sonarqube:
+    image: sonarqube:latest
+    ports:
+      - 9000:9000
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:h2:tcp://localhost:9092/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+    networks:
+      - sonarnet
+
+networks:
+  sonarnet:

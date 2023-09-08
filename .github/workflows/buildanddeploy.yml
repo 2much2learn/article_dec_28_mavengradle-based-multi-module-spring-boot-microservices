@@ -1,0 +1,36 @@
+name: Build, Deploy, Test, and Analyze
+
+on:
+  push:
+    branches:
+      - feature-ms-davidsilva-cicd
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Build and package Maven modules
+      run: |
+        mvn help:evaluate -Dexpression=project.modules
+        mvn clean package spring-boot:build-image -pl service-a
+
+    - name: Start service-a
+      run: |
+        java -jar service-a/target/service-a-0.0.1-SNAPSHOT.jar &
+        
+    - name: Debug Current Directory
+      run: |
+        pwd
+        
+    - name: Wait for services to start
+      run: sleep 10 # Adjust the sleep duration as needed to allow services to start.

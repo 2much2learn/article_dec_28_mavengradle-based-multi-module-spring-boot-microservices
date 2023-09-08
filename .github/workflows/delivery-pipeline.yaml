@@ -69,14 +69,10 @@ jobs:
           kubectl get service -o wide
           kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl get service -o wide
-          kubectl port-forward service/springboot-service-a-svc 8081:8080 &
-          clear
-          sleep 8
+          sleep 25
       
       - name: Testing Api Endpoint Postman 🤌🏼
         run: |
-          echo "Waiting for 8 seconds"
-          sleep 8
           kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl get pods -A -o wide
           echo "Ready"

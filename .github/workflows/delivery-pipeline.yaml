@@ -66,6 +66,7 @@ jobs:
         run: |
           kubectl get pods -A -o wide
           kubectl get service -o wide
+          kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl port-forward service/springboot-service-a-svc 8081:8080
 
       - name: Testing Endpoint

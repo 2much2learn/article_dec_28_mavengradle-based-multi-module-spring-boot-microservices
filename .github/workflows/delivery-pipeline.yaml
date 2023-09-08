@@ -69,7 +69,7 @@ jobs:
           kubectl get service -o wide
           kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl get service -o wide
-          kubectl port-forward service/springboot-service-a-svc 8081:8080 &
+          
       - name: Curl endpoint
         run : |
           curl http://localhost:8080/greeting          

@@ -69,13 +69,6 @@ jobs:
           kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl port-forward service/springboot-service-a-svc 8081:8080 &
 
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/osx_64.sh" | sh
-      
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      
-      - name: Run API tests
+      - name: Testing Api Endpoint Postman
         run: |
           postman collection run "11051031-c3f4f5b1-57df-46ac-a1cd-fbd75bb9a183" -e "11051031-b84eb404-b1bb-4628-a930-4747273c6076"

@@ -36,9 +36,10 @@ jobs:
             echo "Hello"
             wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.zip
             unzip apache-jmeter-5.6.2.zip
-      
+            
       - name: Running Performance testing 🏃🏻‍♂️
         run: |
+          cd apache-jmeter-5.6.2/bin
           jmeter -n -t ./jmeter/service_testing.jmx -l results.csv -e -o ./jmeter/reports
       
       - name: Analisis SonarCloud 🧨

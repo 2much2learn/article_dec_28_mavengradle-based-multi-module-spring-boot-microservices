@@ -7,8 +7,8 @@ on:
 
 jobs:
 
-  run-unit-tests:
-    name: Run Tests 🧪
+  build-and-testing:
+    name: Pipeline Integracion Continua 🤩
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 
@@ -49,4 +49,20 @@ jobs:
           chmod +x gradlew
           ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
   
-  
+  deploy-application:
+    needs: build-and-testing
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout 🚀
+        id: running-tests
+        uses: actions/checkout@v3.5.3
+      
+      - name: Deploy in k8s 🐳 
+        run: |
+          kubectl apply -f $GITHUB_WORKSPACE/k8s
+          kubectl port-forward service/springboot-service-a-svc 8081:8080
+      
+      - name: Testing Endpoint
+        run: |
+          curl -o http://localhost:8081/greeting

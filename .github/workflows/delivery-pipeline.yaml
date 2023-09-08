@@ -11,57 +11,39 @@ jobs:
     name: Run Tests 🧪
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout 
         id: running-tests
         uses: actions/checkout@v3.5.3
+      
+      - name: Setup JAVA JDK
+        uses: actions/setup-java@v3.12.0
+        with:
+          java-version: '11'
+          distribution: 'zulu'
           
-      - name: Run Tests
+      - name: Run Tests 🧪
         run: |
           chmod +x gradlew
           ./gradlew test
-    
-  # scan-vulnerabilities:
-  #   name: Vulnerabilities scanner 🧨
-  #   runs-on: ubuntu-latest
-  #   needs: [run-unit-tests]
-  #   steps:
-  #     - name: Checkout
-  #       id: running-tests
-  #       uses: actions/checkout@v3.5.3
 
-  #     - name: Analisis SonarCloud
-  #       run: |
-  #         chmod +x gradlew
-  #         ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+      - name: Build Project 📦
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build bootBuildImage
+      
+      - name: Configure Jmeter 🚀
+        run: |
+            echo "Hello"
+            wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.zip
+            unzip apache-jmeter-5.6.2.zip
+      
+      - name: Running Performance testing 🏃🏻‍♂️
+        run: |
+          jmeter -n -t ./jmeter/service_testing.jmx -l results.csv -e -o ./jmeter/reports
+      
+      - name: Analisis SonarCloud 🧨
+        run: |
+          chmod +x gradlew
+          ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
   
-  deploy-on-k8s:
-    name: Build docker image 👾
-    runs-on: ubuntu-latest
-    needs: [run-unit-tests]
-    steps:
-      
-      - name: Checkout🚀
-        uses: actions/checkout@v3.5.3
-      
-      - uses: actions/checkout@v2
-      - name: Start minikube
-        
-        uses: medyagh/setup-minikube@master
-      - name: Get pods
-        run: kubectl get pods -A
-
-      - name: Deploy apps
-        run: |
-          ls -lhart
-          kubectl apply -f k8s
-      
-      - name : Check Deployments
-        run: |
-          chmod +x ./scripts/wait-pod
-          ./scripts/wait-pod
-          kubectl get services -o wide
-          kubectl port-forward service/springboot-service-a-svc 8081:8080 &
-      
-      - name: Testing Deployments endpoints
-        run: |
-          curl http://localhost:8081/greeting
+  

@@ -1,0 +1,34 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 1,
+    "errorCount" : 1,
+    "errorPct" : 100.0,
+    "meanResTime" : 12.0,
+    "medianResTime" : 12.0,
+    "minResTime" : 12.0,
+    "maxResTime" : 12.0,
+    "pct1ResTime" : 12.0,
+    "pct2ResTime" : 12.0,
+    "pct3ResTime" : 12.0,
+    "throughput" : 83.33333333333333,
+    "receivedKBytesPerSec" : 208.33333333333334,
+    "sentKBytesPerSec" : 0.0
+  },
+  "HTTP Greeting" : {
+    "transaction" : "HTTP Greeting",
+    "sampleCount" : 1,
+    "errorCount" : 1,
+    "errorPct" : 100.0,
+    "meanResTime" : 12.0,
+    "medianResTime" : 12.0,
+    "minResTime" : 12.0,
+    "maxResTime" : 12.0,
+    "pct1ResTime" : 12.0,
+    "pct2ResTime" : 12.0,
+    "pct3ResTime" : 12.0,
+    "throughput" : 83.33333333333333,
+    "receivedKBytesPerSec" : 208.33333333333334,
+    "sentKBytesPerSec" : 0.0
+  }
+}

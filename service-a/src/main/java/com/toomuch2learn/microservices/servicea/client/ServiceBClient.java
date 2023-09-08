@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.toomuch2learn.microservices.servicea.model.Greeting;
 
-@FeignClient(value = "serviceb", url = "${serviceb.url}")
+@FeignClient(value = "serviceb", url = "http://localhost:8082")
 public interface ServiceBClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/greeting")

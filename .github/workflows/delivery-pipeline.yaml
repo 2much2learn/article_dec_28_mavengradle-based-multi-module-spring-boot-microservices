@@ -61,8 +61,8 @@ jobs:
       - name: Deploy in k8s 🐳 
         run: |
           kubectl apply -f $GITHUB_WORKSPACE/k8s
-          kubectl port-forward service/springboot-service-a-svc 8081:8080
-      
+          
       - name: Testing Endpoint
         run: |
+          kubectl port-forward service/springboot-service-a-svc 8081:8080
           curl -o http://localhost:8081/greeting

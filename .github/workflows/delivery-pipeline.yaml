@@ -72,10 +72,8 @@ jobs:
           kubectl port-forward service/springboot-service-a-svc 8081:8080 &
           clear
           sleep 8
-      
-      - name: Curl endpoint
-        run : |
           curl http://localhost:8081/greeting          
+      
       # - name: Testing Api Endpoint Postman 🤌🏼
       #   run: |
       #     echo "Waiting for 8 seconds"

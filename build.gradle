@@ -5,15 +5,6 @@ plugins {
 	id "org.sonarqube" version "4.3.1.3277"
 }
 
-sonar {
-	properties {
-			property "sonar.projectKey", "KrlosAren_article_dec_28_mavengradle-based-multi-module-spring-boot-microservices"
-			property "sonar.organization", "krlosaren"
-			property "sonar.host.url", "https://sonarcloud.io"
-			property "sonar.sourceEncoding", "UTF-8"
-		}
-}
-
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
@@ -46,8 +37,10 @@ subprojects {
 
 	sonar {
 	properties {
-			property "sonar.sources", "src"
+			property "sonar.projectKey", "KrlosAren_article_dec_28_mavengradle-based-multi-module-spring-boot-microservices"
+			property "sonar.organization", "krlosaren"
 			property "sonar.host.url", "https://sonarcloud.io"
+			property "sonar.sourceEncoding", "UTF-8"
 		}
 	}
 
@@ -57,28 +50,6 @@ subprojects {
 		developmentOnly 'org.springframework.boot:spring-boot-devtools'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	}
-
-	project(":service-a") {
-    sonar {
-        properties {
-            property "sonar.branch", "feature-ms-carlosLopez-pipelinedelivery"
-        }
-    }}
-	project(":service-b") {
-    sonar {
-        properties {
-            property "sonar.branch", "feature-ms-carlosLopez-pipelinedelivery"
-        }
-    }}
-	project(":service-c") {
-    sonar {
-        properties {
-            property "sonar.branch", "feature-ms-carlosLopez-pipelinedelivery"
-        }
-    }}
-
-
-
 
 	dependencyManagement {
 		imports {

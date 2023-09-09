@@ -80,7 +80,4 @@ jobs:
           ls -lhart
           cd $GITHUB_WORKSPACE/apache-jmeter-5.6.2/bin
           ./jmeter.sh -n -t $GITHUB_WORKSPACE/jmeter/service_testing.jmx -l $GITHUB_WORKSPACE/jmeter/results.csv -e -o $GITHUB_WORKSPACE/jmeter/reports
-      
-      - name: Shutdown Application 🧑🏻‍💻
-        run : |
-          kubectl delete -f k8s
+    

@@ -46,7 +46,7 @@ subprojects {
 
 	sonar {
 	properties {
-			property "sonar.sources", "src/main"
+			property "sonar.sources", "service-a"
 			property "sonar.host.url", "https://sonarcloud.io"
 		}
 	}

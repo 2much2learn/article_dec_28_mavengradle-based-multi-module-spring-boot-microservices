@@ -21,33 +21,27 @@ jobs:
           java-version: '11'
           distribution: 'zulu'
           
-      # - name: Run Tests 🧪
-      #   run: |
-      #     chmod +x gradlew
-      #     ./gradlew test
+      - name: Run Tests 🧪
+        run: |
+          chmod +x gradlew
+          ./gradlew test
 
-      # - name: Build Project 📦
-      #   run: |
-      #     chmod +x ./gradlew
-      #     ./gradlew clean build bootBuildImage
+      - name: Build Project 📦
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build bootBuildImage
       
-      # - name: Configure Jmeter 🚀
-      #   run: |
-      #       cd $GITHUB_WORKSPACE
-      #       wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.zip
-      #       unzip apache-jmeter-5.6.2.zip
-      #       ls -lhart
             
-      # - name: Running Performance testing 🏃🏻‍♂️
-      #   run: |
-      #     ls -lhart
-      #     cd $GITHUB_WORKSPACE/apache-jmeter-5.6.2/bin
-      #     ./jmeter.sh -n -t $GITHUB_WORKSPACE/jmeter/service_testing.jmx -l $GITHUB_WORKSPACE/jmeter/results.csv -e -o $GITHUB_WORKSPACE/jmeter/reports
+      - name: Running Performance testing 🏃🏻‍♂️
+        run: |
+          ls -lhart
+          cd $GITHUB_WORKSPACE/apache-jmeter-5.6.2/bin
+          ./jmeter.sh -n -t $GITHUB_WORKSPACE/jmeter/service_testing.jmx -l $GITHUB_WORKSPACE/jmeter/results.csv -e -o $GITHUB_WORKSPACE/jmeter/reports
       
-      # - name: Analisis SonarCloud 🧨
-      #   run: |
-      #     chmod +x gradlew
-      #     ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+      - name: Analisis SonarCloud 🧨
+        run: |
+          chmod +x gradlew
+          ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
   
   deploy-application:
     name : Deployment Application 🥊
@@ -69,7 +63,6 @@ jobs:
           kubectl get service -o wide
           kubectl wait --for condition=ready $(kubectl get pod -o name)
           kubectl get service -o wide
-          sleep 25
       
       - name: Testing Api Endpoint Postman 🤌🏼
         run: |
@@ -77,7 +70,5 @@ jobs:
     
       - name: Running Performance testing 🏃🏻‍♂️
         run: |
-          ls -lhart
-          cd $GITHUB_WORKSPACE/apache-jmeter-5.6.2/bin
           jmeter -n -t $GITHUB_WORKSPACE/jmeter/service_testing.jmx -l $GITHUB_WORKSPACE/jmeter/results.csv -e -o $GITHUB_WORKSPACE/jmeter/reports
     

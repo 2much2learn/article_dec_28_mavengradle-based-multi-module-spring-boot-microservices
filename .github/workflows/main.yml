@@ -41,4 +41,4 @@ jobs:
       - name: SonarCloud Scan
         run: sonar-scanner
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Usa la variable de entorno del token de acceso
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Usa la variable de entorno del token de acceso.

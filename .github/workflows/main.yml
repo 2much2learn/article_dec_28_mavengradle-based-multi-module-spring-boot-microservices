@@ -18,5 +18,10 @@ jobs:
           run: |
               chmod +x gradlew
               ./gradlew clean :service-a:build
-
-         
+      
+        - name: SonarCloud Pkg
+          uses: actions/cache@v3
+          with:
+            path: ~/.sonar/cache
+            key: ${{ runner.os }}-sonar
+            restore-keys: ${{ runner.os }}-sonar

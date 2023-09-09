@@ -9,3 +9,10 @@ bootJar {
 bootBuildImage{ 
   imageName='krlosaren/'+rootProject.name+'-'+project.name
 }
+
+	project(":service-c") {
+    sonar {
+        properties {
+            property "sonar.branch", "feature-ms-carlosLopez-pipelinedelivery"
+        }
+    }}

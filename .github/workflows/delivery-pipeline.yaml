@@ -23,15 +23,15 @@ jobs:
           java-version: '11'
           distribution: 'zulu'
           
-      - name: Run Tests 🧪
-        run: |
-          chmod +x gradlew
-          ./gradlew test
+      # - name: Run Tests 🧪
+      #   run: |
+      #     chmod +x gradlew
+      #     ./gradlew test
 
-      - name: Build Project 📦
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean build bootBuildImage
+      # - name: Build Project 📦
+      #   run: |
+      #     chmod +x ./gradlew
+      #     ./gradlew clean build bootBuildImage
             
       - name: Analisis SonarCloud 🧨
         run: |

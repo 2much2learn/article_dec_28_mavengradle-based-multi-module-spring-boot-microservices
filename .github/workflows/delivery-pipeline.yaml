@@ -1,0 +1,72 @@
+name: Delivery Pipeline
+
+on:
+  push:
+    branches:
+      - feature-ms-carlosLopez-pipelinedelivery
+
+jobs:
+
+  build-and-testing:
+    name: Pipeline Integracion Continua 🤩
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        id: running-tests
+        uses: actions/checkout@v3.5.3
+        with:
+          ref: 'feature-ms-carlosLopez-pipelinedelivery'
+      
+      - name: Setup JAVA JDK
+        uses: actions/setup-java@v3.12.0
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+          
+      # - name: Run Tests 🧪
+      #   run: |
+      #     chmod +x gradlew
+      #     ./gradlew test
+
+      # - name: Build Project 📦
+      #   run: |
+      #     chmod +x ./gradlew
+      #     ./gradlew clean build bootBuildImage
+            
+      - name: Analisis SonarCloud 🧨
+        run: |
+          chmod +x gradlew
+          ./gradlew build sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+  
+  deploy-application:
+    name : Deployment Application 🥊
+    needs: build-and-testing 
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout 🚀
+        id: running-tests
+        uses: actions/checkout@v3.5.3
+        with:
+          ref: 'feature-ms-carlosLopez-pipelinedelivery'
+      
+      
+      - name: Deploy in k8s 🐳 
+        run: |
+          kubectl apply -f $GITHUB_WORKSPACE/k8s
+      
+      - name: Exposing Apps 👾
+        run: |
+          kubectl get pods -A -o wide
+          kubectl get service -o wide
+          kubectl wait --for condition=ready $(kubectl get pod -o name)
+          kubectl get service -o wide
+      
+      - name: Testing Api Endpoint Postman 🤌🏼
+        run: |
+          postman collection run "11051031-c3f4f5b1-57df-46ac-a1cd-fbd75bb9a183" -e "11051031-b84eb404-b1bb-4628-a930-4747273c6076"
+    
+      - name: Running Performance testing 🏃🏻‍♂️
+        run: |
+          jmeter -n -t $GITHUB_WORKSPACE/jmeter/service_testing.jmx -l $GITHUB_WORKSPACE/jmeter/results.csv -e -o $GITHUB_WORKSPACE/jmeter/reports
+    

@@ -2,7 +2,17 @@ plugins {
 	id 'org.springframework.boot' version '2.4.1'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id "org.sonarqube" version "4.3.1.3277"
 }
+
+	sonar {
+	properties {
+			property "sonar.projectKey", "KrlosAren_article_dec_28_mavengradle-based-multi-module-spring-boot-microservices"
+			property "sonar.organization", "krlosaren"
+			property "sonar.host.url", "https://sonarcloud.io"
+			property "sonar.sourceEncoding", "UTF-8"
+		}
+	}
 
 repositories {
 	mavenCentral()
@@ -24,14 +34,17 @@ subprojects {
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 	apply plugin: 'java'
-
+	
 	repositories {
 		mavenCentral()
 	}
 
 	test {
 		useJUnitPlatform()
+		
 	}
+
+
 
 	dependencies {
 		implementation 'org.yaml:snakeyaml:1.27'

@@ -7,5 +7,12 @@ bootJar {
 }
 
 bootBuildImage{ 
-  imageName='narramadan/'+rootProject.name+'-'+project.name
+  imageName='krlosaren/'+rootProject.name+'-'+project.name
 }
+
+	project(":service-a") {
+    sonar {
+        properties {
+            property "sonar.branch", "feature-ms-carlosLopez-pipelinedelivery"
+        }
+    }}

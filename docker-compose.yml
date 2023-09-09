@@ -14,8 +14,8 @@ services:
       - service-c
     environment:
       - "spring.profiles.active=prod"
-      - "serviceb.url=http://service-b:8082"
-      - "servicec.url=http://service-c:8083"
+      - "serviceb.url=http://localhost:8082"
+      - "servicec.url=http://localhost:8083"
     networks:
       - backend
 
